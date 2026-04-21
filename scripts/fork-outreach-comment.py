@@ -34,6 +34,9 @@ from pathlib import Path
 
 REPO_UPSTREAM = "jacksteamdev/obsidian-mcp-tools"
 REPO_FORK = "istefox/obsidian-mcp-connector"
+# When obsidianmd/obsidian-releases#11919 is merged, extend the templates
+# with a "Available in the community store" clause alongside BRAT. Until
+# then, the templates intentionally only reference BRAT to stay evergreen.
 COMMUNITY_STORE_PR = 11919
 LOG_PATH = Path(__file__).resolve().parent / ".outreach-log.jsonl"
 
@@ -84,26 +87,28 @@ INDIRECT_MAP: dict[int, FixRef] = {
 
 
 COMMENT_TEMPLATE_DIRECT = """\
-For anyone still waiting on this — it's been fixed in the community fork at \
-https://github.com/{fork} (commit `{sha_clause}`, released in **v{version}**).
+Heads up for anyone still watching this — this has been fixed in the \
+community fork at https://github.com/{fork} (commit `{sha_clause}`, shipped \
+in **v{version}**).
 
-You can install today via [BRAT](https://github.com/TfTHacker/obsidian42-brat) \
-by pointing to `{fork}`, or wait for the community-store entry pending at \
-obsidianmd/obsidian-releases#{store_pr}.
+Install today via [BRAT](https://github.com/TfTHacker/obsidian42-brat) by \
+pointing it to `{fork}`.
 
-Opening from the fork side to surface the pointer — feel free to close if \
-you're satisfied, or keep open to track the upstream decision."""
+Posting from the fork maintainer side to surface the pointer — feel free \
+to close this issue if the fork resolves it for you, or keep it open to \
+track the upstream decision."""
 
 
 COMMENT_TEMPLATE_INDIRECT = """\
-For anyone still watching this — I believe this is resolved indirectly in the \
-community fork at https://github.com/{fork} by the install-location fix for \
-#28 (commit `{sha_clause}`, released in **v{version}**). The underlying \
-root cause (MCP server binary stuck in a hard-coded path) was the same.
+Heads up for anyone still watching this — I believe this is resolved \
+indirectly in the community fork at https://github.com/{fork} by the \
+install-location refactor for #28 (commit `{sha_clause}`, shipped in \
+**v{version}**). The underlying root cause (MCP server binary stuck in a \
+hard-coded path) was the same.
 
-If you still hit the bug on the fork, please open a fresh issue at \
-{fork}/issues — happy to look at it. Install via [BRAT](https://github.com/TfTHacker/obsidian42-brat) \
-pointing to `{fork}`, or wait for obsidianmd/obsidian-releases#{store_pr}."""
+Install via [BRAT](https://github.com/TfTHacker/obsidian42-brat) pointing \
+to `{fork}`. If the bug still reproduces on the fork, please open a fresh \
+issue at {fork}/issues — happy to look at it."""
 
 
 def render_comment(issue: int, ref: FixRef, *, indirect: bool) -> str:
@@ -113,7 +118,6 @@ def render_comment(issue: int, ref: FixRef, *, indirect: bool) -> str:
         fork=REPO_FORK,
         sha_clause=sha_clause,
         version=ref.version,
-        store_pr=COMMUNITY_STORE_PR,
     )
 
 
