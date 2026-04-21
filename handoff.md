@@ -336,20 +336,16 @@ In ordine di priorità potenziale per le prossime sessioni:
   - Supplementary docs
 - **Notifiche**: GitHub manda email su qualsiasi commento sulla PR
 
-### B — Fase 4 outreach — annuncia il fork sulle issue upstream risolte
-- **Effort**: ~30 min totale (commento standard ripetuto)
-- **Scope aggiornato al 2026-04-21**: commentare sulle **23 issue upstream risolte direttamente** (#26, #28, #29, #30, #31, #33, #35, #36, #37, #39, #40, #41, #59, #60, #61, #62, #63, #66, #67, #68, #71, #77, #78) per dire "this is fixed in the community fork at `istefox/obsidian-mcp-connector`". Ogni autore originale riceve notifica → outreach efficace.
-- **Opzionali**: #27 e #38 (coperti indirettamente da #28) — commentare solo dopo aver verificato il caso specifico.
-- **Escludere**: #79 (la tua meta-issue di annuncio).
-- **Tooling**: `scripts/fork-outreach-comment.sh` automatizza il comment batch in modalità dry-run + `--execute`. Vedi sezione 7.
-- **Pattern del commento** (template salvato in memoria di sessione):
-  ```
-  For users still waiting on this — fixed in the community fork
-  at github.com/istefox/obsidian-mcp-connector
-  ([commit X], release vY.Z). Install via BRAT or via the
-  community store (PR #11919 merged on 2026-XX-XX).
-  ```
-- **Quando farlo**: meglio dopo che PR community store è merged (così l'utente può cliccare-e-installare direttamente nello store), MA va bene anche subito con BRAT come fallback.
+### B — ~~Fase 4 outreach — annuncia il fork sulle issue upstream risolte~~ ✅ COMPLETATO 2026-04-21
+
+- **Eseguito il 2026-04-21 ~19:21 UTC** via `scripts/fork-outreach-comment.py run --execute`.
+- **23 commenti pubblicati** su `jacksteamdev/obsidian-mcp-tools` (una per issue risolta direttamente): #26, #28, #29, #30, #31, #33, #35, #36, #37, #39, #40, #41, #59, #60, #61, #62, #63, #66, #67, #68, #71, #77, #78. Audit trail completo con URL dei comment in `scripts/.outreach-log.jsonl`.
+- **Template utilizzato**: quello pre-merge community store (mentions PR #11919 pending). Il template live nel repo è stato successivamente riscritto evergreen (solo BRAT, no PR reference) per future iterazioni — vedi commit `d25cf53`.
+- **Deliberatamente NON commentate**:
+  - **#27, #38** (indirect coverage): lasciate aperte per onestà intellettuale — non ho evidenza specifica che la install-path refactor di #28 risolva il loro caso, solo inferenza. Rischio content-integrity > beneficio marginale (2 issue extra su 26).
+  - **#79**: meta-issue aperta da te stesso (fork announcement), self-comment non avrebbe senso.
+- **Quando ri-fare outreach**: solo quando PR community store `obsidianmd/obsidian-releases#11919` viene mergiata, con template esteso per menzionare il community store. Comando: `python3 scripts/fork-outreach-comment.py run --force --execute` (il `--force` bypassa il log idempotente).
+- **Monitoring**: GitHub manda notifiche su qualsiasi commento/chiusura dei 23 issue. Nelle 48-72 h dopo il batch, aspettarsi alcune chiusure spontanee da autori originali + eventualmente il maintainer upstream (se torna).
 
 ### C — Sync periodico con upstream
 - **Effort**: 5 min per il check, ore se ci sono cose da cherry-pick
