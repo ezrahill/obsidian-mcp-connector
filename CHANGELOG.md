@@ -3,6 +3,24 @@
 All notable changes to **MCP Connector** (formerly `obsidian-mcp-tools`) are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [Semantic Versioning](https://semver.org/).
 
+## [0.3.5] — 2026-04-23
+
+### Fixed
+- **"Install Server" returned 404 on every platform since the fork** —
+  `packages/obsidian-plugin/bun.config.ts` hardcoded a `define` entry
+  for `process.env.GITHUB_DOWNLOAD_URL` pointing at
+  `jacksteamdev/obsidian-mcp-tools/releases/download/<version>`. The
+  `define` ran at bundle time and silently overrode the
+  `GITHUB_DOWNLOAD_URL` env var injected by `.github/workflows/release.yml`,
+  so every shipped `main.js` looked for `mcp-server-windows.exe` (and
+  the macOS/Linux equivalents) on the dormant upstream repo where the
+  fork versions do not exist. Switched the `define` to read
+  `process.env.GITHUB_DOWNLOAD_URL` at build time with a
+  fork-repo fallback for local builds. Same treatment for
+  `GITHUB_REF_NAME`. The build-time ArkType macro in
+  `features/mcp-server-install/constants/bundle-time.ts` now receives
+  the correct values in CI. Reported in #3.
+
 ## [0.3.4] — 2026-04-21
 
 ### Added
