@@ -4,9 +4,9 @@ import { Notice, Plugin, TFile } from "obsidian";
 import { shake } from "radash";
 import { lastValueFrom } from "rxjs";
 import {
-  jsonSearchRequest,
   LocalRestAPI,
   searchParameters,
+  searchRequest,
   Templater,
   type PromptArgAccessor,
   type SearchResponse,
@@ -194,8 +194,8 @@ export default class McpToolsPlugin extends Plugin {
         return;
       }
 
-      // Validate request body
-      const requestBody = jsonSearchRequest
+      // bodyParser.json() has already parsed req.body into an object.
+      const requestBody = searchRequest
         .pipe(({ query, filter = {} }) => ({
           query,
           filter: shake({
